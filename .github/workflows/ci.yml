@@ -12,15 +12,17 @@ on:
 jobs:
 
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-
     - name: Set up Go
-      uses: actions/setup-go@v4
+      uses: actions/setup-go@v2
       with:
-        go-version: '1.19.1'
+        go-version: '1.19'
       id: go
+    
+    - name: Check out Code into Go module directory
+      uses: actions/checkout@v2    
 
     - name: Test
       run: make test
