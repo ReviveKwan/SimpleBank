@@ -31,7 +31,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
+
+        ports:
+            # Maps tcp port 5432 on service container to the host
+            - 5432:5432
     steps:
     - name: Set up Go
       uses: actions/setup-go@v2
@@ -42,9 +45,11 @@ jobs:
     - name: Check out Code into Go module directory
       uses: actions/checkout@v2    
     
-    # - name: Install Golang-migrate
-    #   run : $ curl -L https://github.com/golang-migrate/migrate/releases/download/$version/migrate.$os-$arch.tar.gz | tar xvz
-
+    - name: Install Golang-migrate
+      run : 
+        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.12.2/migrate.linux-amd64.tar.gz | tar xvz
+        sudo mv migrate.linux-amd64 /usr/bin/migrate
+        witch migrate
     - name: Run migrations
       run: make migrateup
 
