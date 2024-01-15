@@ -31,6 +31,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    
     steps:
     - name: Set up Go
       uses: actions/setup-go@v2
@@ -41,8 +42,11 @@ jobs:
     - name: Check out Code into Go module directory
       uses: actions/checkout@v2    
     
+    # - name: Install Golang-migrate
+    #   run : $ curl -L https://github.com/golang-migrate/migrate/releases/download/$version/migrate.$os-$arch.tar.gz | tar xvz
+
     - name: Run migrations
-      uses: make migrateup
+      run: make migrateup
 
     - name: Test
       run: make test
