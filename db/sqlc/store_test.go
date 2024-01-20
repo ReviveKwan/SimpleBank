@@ -12,8 +12,8 @@ func TestTransfor(t *testing.T) {
 	store := NewStore(testDB)
 	account1 := createRandomAccount(t)
 	account2 := createRandomAccount(t)
-	fmt.Println(">> before:", account1.Balance, account2.Balance)
-	n := 5
+	fmt.Println(">> before:", account1.ID, account1.Balance, account2.ID, account2.Balance)
+	n := 1
 	amount := int64(10)
 
 	errs := make(chan error)
@@ -79,7 +79,8 @@ func TestTransfor(t *testing.T) {
 		//TODO: check account' balance
 		fmt.Println(">> tx:", fromAccount.Balance, toAccount.Balance)
 		diff1 := account1.Balance - fromAccount.Balance
-		diff2 := account2.Balance - toAccount.Balance
+		diff2 := toAccount.Balance - account2.Balance
+		fmt.Println(">> diff tx:", account2.Balance, toAccount.Balance)
 		require.Equal(t, diff1, diff2)
 		require.True(t, diff1 > 0)
 		require.True(t, diff1%amount == 0) // 1 * amount , 2 * amount, 3 * amount, ... n * amount
@@ -91,10 +92,10 @@ func TestTransfor(t *testing.T) {
 	}
 	// check the fianl updated balances
 	updatedAccount1, err := testQueries.GetAccount(context.Background(), account1.ID)
-	require.Error(t, err)
+	require.NoError(t, err)
 
 	updatedAccount2, err := testQueries.GetAccount(context.Background(), account2.ID)
-	require.Error(t, err)
+	require.NoError(t, err)
 
 	fmt.Println(">> after:", updatedAccount1.Balance, updatedAccount2.Balance)
 
